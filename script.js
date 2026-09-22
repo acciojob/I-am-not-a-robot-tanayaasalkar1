@@ -84,18 +84,27 @@ shuffledArr.forEach((img) => {
 // Reset
 reset.addEventListener("click", () => {
 
+    // Clear selected images
     selectedImages = [];
 
-    shuffledArr.forEach((img) => {
+    // Remove selected class from all selected images
+    let selected = document.querySelectorAll(".selected");
+
+    selected.forEach((img) => {
         img.classList.remove("selected");
     });
 
+    // Hide Reset and Verify
     reset.style.display = "none";
     verify.style.display = "none";
 
+    // Clear verification message
     para.textContent = "";
-});
 
+    // Restore initial heading/message
+    document.getElementById("h").textContent =
+        "Please click on the identical tiles to verify that you are not a robot.";
+});
 
 // Verify
 verify.addEventListener("click", () => {
