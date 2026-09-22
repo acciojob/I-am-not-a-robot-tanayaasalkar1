@@ -1,3 +1,4 @@
+// Select images
 let img1 = document.querySelector(".img1");
 let img2 = document.querySelector(".img2");
 let img3 = document.querySelector(".img3");
@@ -6,22 +7,22 @@ let img5 = document.querySelector(".img5");
 
 let imgArr = [img1, img2, img3, img4, img5];
 
-// Get the source of a randomly selected image
+
+// Select random image for duplicate
 let randomIndex = Math.floor(Math.random() * imgArr.length);
 let duplicateSource = imgArr[randomIndex].src;
 
-// Create the sixth image
+// Create duplicate image
 let duplicateImg = document.createElement("img");
 duplicateImg.src = duplicateSource;
-
-// Give it the same class as the original image
 duplicateImg.className = imgArr[randomIndex].className;
 
-// Add duplicate to array
+
+// Add duplicate
 imgArr.push(duplicateImg);
 
 
-// Shuffle the six images
+// Shuffle
 let shuffledArr = [];
 
 while (imgArr.length > 0) {
@@ -33,7 +34,7 @@ while (imgArr.length > 0) {
 }
 
 
-// Display shuffled images
+// Display images
 let flex = document.querySelector(".flex");
 
 for (let i = 0; i < shuffledArr.length; i++) {
@@ -41,16 +42,18 @@ for (let i = 0; i < shuffledArr.length; i++) {
 }
 
 
-// Buttons and message
+// Select elements
 let reset = document.getElementById("reset");
 let verify = document.getElementById("verify");
-let para = document.getElementById("para");
+let heading = document.getElementById("h");
 
+
+// Initial state
 reset.style.display = "none";
 verify.style.display = "none";
 
 
-// Selected images
+// Store selected images
 let selectedImages = [];
 
 
@@ -59,7 +62,6 @@ shuffledArr.forEach((img) => {
 
     img.addEventListener("click", () => {
 
-        // Don't allow the same tile to be selected twice
         if (!selectedImages.includes(img)) {
 
             selectedImages.push(img);
@@ -67,17 +69,34 @@ shuffledArr.forEach((img) => {
             img.classList.add("selected");
         }
 
-        // Show Reset after first selection
+        // Show Reset after first click
         if (selectedImages.length >= 1) {
             reset.style.display = "block";
         }
 
-        // Show Verify only after exactly two selections
+        // Show Verify after exactly two clicks
         if (selectedImages.length === 2) {
             verify.style.display = "block";
         }
     });
 
+});
+
+
+// Verify
+verify.addEventListener("click", () => {
+
+    if (selectedImages[0].src === selectedImages[1].src) {
+
+        heading.textContent = "You are a human. Congratulations!";
+
+    } else {
+
+        heading.textContent =
+            "We can't verify you as a human. You selected the non-identical tiles.";
+    }
+
+    verify.style.display = "none";
 });
 
 
@@ -87,37 +106,16 @@ reset.addEventListener("click", () => {
     // Clear selected images
     selectedImages = [];
 
-    // Remove selected class from all selected images
-    let selected = document.querySelectorAll(".selected");
-
-    selected.forEach((img) => {
+    // Remove selected class
+    shuffledArr.forEach((img) => {
         img.classList.remove("selected");
     });
 
-    // Hide Reset and Verify
+    // Hide buttons
     reset.style.display = "none";
     verify.style.display = "none";
 
-    // Clear verification message
-    para.textContent = "";
-
-    // Restore initial heading/message
-    document.getElementById("h").textContent =
+    // Restore initial heading
+    heading.textContent =
         "Please click on the identical tiles to verify that you are not a robot.";
-});
-
-// Verify
-verify.addEventListener("click", () => {
-
-    if (selectedImages[0].src === selectedImages[1].src) {
-
-        para.textContent = "You are a human. Congratulations!";
-
-    } else {
-
-        para.textContent =
-            "We can't verify you as a human. You selected the non-identical tiles.";
-    }
-
-    verify.style.display = "none";
 });
